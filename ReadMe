@@ -1,0 +1,2 @@
+If you use generate.sh, you need to change value of secret key of ca in docker-compose.yaml file otherwise enroll admin javascript will not work
+
