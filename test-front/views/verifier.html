@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Contact V17</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="css/util.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+<!--===============================================================================================-->
+</head>
+<body>
+
+	
+    <div class="container-contact100">
+            <div class="wrap-contact100">
+                    <form class="contact100-form validate-form"> 
+                            <span class="contact100-form-title">
+                                VERIFY CERTIFICATE
+                            </span>
+            
+                            
+                            <label id="first-name"class="label-input100" for="first-name">Name of the student</label>
+                            <label id="department" class="label-input100" for="department">Department *</label>
+                            <label id="cgpa" class="label-input100" for="cgpa">Enter CGPA</label>
+                            <label id="remark" class="label-input100" for="remark">REMARK</label>
+                                        
+                    </form>
+    
+                <div class="contact100-more flex-col-c-m">
+                <label class="label-input100" for="uploading"> Upload certificate to verify</label>
+                <div class="container-contact100-form-btn">
+                        <input type="file" id="selectFiles" value="Import" />
+                        <button class="contact100-form-btn" id="import">
+                            Verify certificate
+                        </button>                        
+                </div>
+                <div> <p id="resultHash"></p> </div>
+                <div> <h1 id="resultImg"></h1> </div>
+                
+                </div>
+            </div>
+        </div>
+    <script src="./node_modules/web3/dist/web3.min.js"></script>
+    <script src="./sha-256.js"></script>
+    <script>
+    document.getElementById('import').onclick = function() {
+       
+        var files = document.getElementById('selectFiles').files;
+        console.log(files);
+        if (files.length <= 0) {
+            return false;
+        }
+        var fr = new FileReader();
+        fr.onload = function(e) { 
+        console.log(e);
+        var result = JSON.parse(e.target.result);
+        var formatted = JSON.stringify(result);
+        certificateData=formatted;
+        console.log(certificateData);
+        console.log(result);
+        document.getElementById('first-name').innerHTML = document.getElementById('first-name').innerHTML + "    " + result.firstName+" "+result.lastName;
+        document.getElementById('cgpa').innerHTML = document.getElementById('cgpa').innerHTML + "    " + result.cgpa;
+        document.getElementById('department').innerHTML = document.getElementById('department').innerHTML + "    " + result.department;
+        document.getElementById('remark').innerHTML = document.getElementById('remark').innerHTML + "    " + result.remark;
+
+        //verification
+        var requiredCertificateData={}
+        requiredCertificateData['firstName']=result.firstName;
+        requiredCertificateData['lastName']=result.lastName;
+        requiredCertificateData['cgpa']=result.cgpa;
+        requiredCertificateData['department']=result.department;  
+        requiredCertificateData['remark']=result.remark;
+        json=JSON.stringify(requiredCertificateData);
+        console.log(json);        
+        hash=JSON.stringify(SHA256(json));
+        console.log("\nhash - "+hash);
+
+        Web3 = require('web3');
+        web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+        console.log(result.transactionId);
+        var transaction = web3.eth.getTransaction(result.transactionId);
+        var originalHash = web3.toAscii(transaction.input);
+        console.log("transaction input -> "+web3.toAscii(transaction.input)+" hash on transaction-"+result.hashValue);
+        originalHash = originalHash.substr(4);
+        document.getElementById("resultHash").innerHTML= " ORIGINAL DATA HASH - " + originalHash + "\n Hash of uploaded data - "+hash;  
+        if(originalHash.localeCompare(hash) == 0){     
+        document.getElementById("resultImg").innerHTML= "&#10004";}
+        else{
+        document.getElementById("resultImg").innerHTML= "&#10060";}
+
+        }
+        fr.readAsText(files.item(0));
+
+        
+    };    
+
+    </script>
+</body>
+</html>
+
+

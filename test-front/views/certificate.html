@@ -1,0 +1,39 @@
+<!-- <script>
+
+    function issueCertificate(){
+        //getting the instance of issuer smart contract object already deployed
+        Web3 = require('web3');
+        web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+        console.log(web3);
+        abi = JSON.parse( '[{"constant":false,"inputs":[],"name":"issueCertificate","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"}]');
+        IssuingContract = web3.eth.contract(abi);
+        // In your nodejs console, execute contractInstance.address to get the address at which the contract is deployed and change the line below to use your deployed address
+        contractInstance = IssuingContract.at('0x850ae83811c463c853ecfe0171535df987710785');
+        console.log(contractInstance);
+        contractInstance.issueCertificate( {from: web3.eth.accounts[0]}, 
+        function(){} );
+    }
+
+</script> -->
+
+<div style="width:800px; height:600px; padding:20px; text-align:center; border: 10px solid #787878">
+    <div style="width:750px; height:550px; padding:20px; text-align:center; border: 5px solid #787878">
+           <span style="font-size:50px; font-weight:bold">National Institute of Technology , Warangal</span>
+           <br><br>
+           <span style="font-size:25px"><i>This is to certify that</i></span>
+           <br><br>
+           <span style="font-size:30px"><b><%= name %></b></span><br/><br/>
+           <span style="font-size:25px"><i> of branch </i></span> <br/><br/>
+           <span style="font-size:30px"><%= department %></span> <br/><br/>
+           <span style="font-size:20px"> has secured CGPA- <b><%= cgpa %></b></span> <br/><br/><br/><br/>
+           <span style="font-size:25px"><i> remarks </i></span><br>
+           <%= remark %>
+          <span style="font-size:30px"></span>
+</div>
+</div>
+
+<!--
+<button type="button" onclick="issueCertificate()">Issue</button> -->
+
+
+

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Contact V17</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="css/util.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+<!--===============================================================================================-->
+</head>
+<body>
+
+
+	<div class="container-contact100">
+		<div class="wrap-contact100">
+			<form class="contact100-form validate-form" action="/issuing" method="get" id="data-form"> 
+				<span class="contact100-form-title">
+					ISSUE CERTIFICATE
+				</span>
+
+				<label class="label-input100" for="first-name">Name of the student</label>
+				<div class="wrap-input100 rs1-wrap-input100 validate-input" data-validate="Type first name">
+					<input id="firstName" class="input100" type="text" name="firstName" placeholder="First name">
+					<span class="focus-input100"></span>
+				</div>
+				<div class="wrap-input100 rs2-wrap-input100 validate-input" data-validate="Type last name">
+					<input  id="lastName" class="input100" type="text" name="lastName" placeholder="Last name">
+					<span class="focus-input100"></span>
+				</div>
+
+				<label class="label-input100" for="department">Department *</label>
+				<div class="wrap-input100 validate-input" >
+					<input id="department" class="input100" type="text" name="department" >
+					<span class="focus-input100"></span>
+				</div>
+
+				<label class="label-input100" for="cgpa">Enter CGPA</label>
+				<div class="wrap-input100">
+					<input id="cgpa" class="input100" type="text" name="cgpa">
+					<span class="focus-input100"></span>
+				</div>
+
+				<label class="label-input100" for="remark">REMARK</label>
+				<div class="wrap-input100 validate-input">
+					<textarea id="remark" class="input100" name="remark" placeholder="give remark"></textarea>
+					<span class="focus-input100"></span>
+				</div>
+
+				<div class="container-contact100-form-btn">
+					<button class="contact100-form-btn">
+						View certificate
+					</button>
+				</div>
+			</form>
+
+			<div class="contact100-more flex-col-c-m" style="background-image: url('images/bg-admin.jpg');">
+			</div>
+
+			<div class="container-contact100-form-btn">
+				<button class="contact100-form-btn" id="issue">
+					Issue certificate
+				</button>
+			</div>
+		</div>
+	</div>
+
+
+
+	<div id="dropDownSelect1"></div>
+
+<!--===============================================================================================-->
+	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/bootstrap/js/popper.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/select2/select2.min.js"></script>
+	<script>
+		$(".selection-2").select2({
+			minimumResultsForSearch: 20,
+			dropdownParent: $('#dropDownSelect1')
+		});
+	</script>
+<!--===============================================================================================-->
+	<script src="vendor/daterangepicker/moment.min.js"></script>
+	<script src="vendor/daterangepicker/daterangepicker.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/countdowntime/countdowntime.js"></script>
+<!--===============================================================================================
+	<script src="js/main.js"></script> -->
+	
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
+	<script src="./node_modules/graceful-fs/fs.js"></script>
+	<script src="./node_modules/web3/dist/web3.min.js"></script>
+	<script src="./sha-256.js"></script>
+	<script src="./issuer.js"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+	  gtag('config', 'UA-23581568-13');
+		
+	  //issuing certificate
+		document.getElementById('issue').onclick = function() {
+				var requiredCertificateData={}
+				requiredCertificateData['firstName']=document.getElementById("firstName").value;
+				requiredCertificateData['lastName']=document.getElementById("lastName").value;
+				requiredCertificateData['cgpa']=document.getElementById("cgpa").value;
+				requiredCertificateData['department']=document.getElementById("department").value;
+				requiredCertificateData['remark']=document.getElementById("remark").value;
+				json=JSON.stringify(requiredCertificateData);
+				console.log(json);        
+				hashedData=JSON.stringify(SHA256(json));
+				issue(requiredCertificateData, hashedData);  
+		}
+
+	</script>
+</body>
+</html>
