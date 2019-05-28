@@ -4,7 +4,7 @@ export FABRIC_CFG_PATH=${PWD}
 export CHANNEL_NAME=certchannel
 
 # network name is COMPOSE_PROJECT_NAME_basic
-export COMPOSE_PROJECT_NAME=project-v9
+export COMPOSE_PROJECT_NAME=projectv9
 
 
 set -ev
